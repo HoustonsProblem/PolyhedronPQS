@@ -25,7 +25,7 @@ Kopernicus has its own dependencies; install it following its instructions (CKAN
 3. Add a `VertexHeightPolyhedron` node to the PQS mods of a Kopernicus body (below).
 4. After changing any shape setting, **delete that body's Kopernicus mesh cache** (`GameData/<your pack>/Cache/<Body>.bin`) so the scaled-space mesh is rebuilt to match the ground.
 
-CKAN: a NetKAN entry has been submitted to [KSP-CKAN/NetKAN](https://github.com/KSP-CKAN/NetKAN); once merged, `PolyhedronPQS` can be installed from CKAN.
+CKAN: PolyhedronPQS has a [NetKAN entry](https://github.com/KSP-CKAN/NetKAN/blob/master/NetKAN/PolyhedronPQS.netkan) pointing at the SpaceDock release, so it can be installed with CKAN along with its dependencies.
 
 ## Quick start
 
