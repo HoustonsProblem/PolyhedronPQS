@@ -1,0 +1,67 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- Kopernicus is built for .NET Framework 4.8, so this must be 4.8 or higher -->
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>7.3</LangVersion>
+    <AssemblyName>PolyhedronPQS</AssemblyName>
+    <RootNamespace>PolyhedronPQS</RootNamespace>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <DebugType>portable</DebugType>
+
+    <!-- Point this at your KSP install, or pass it on the command line:
+         dotnet build -c Release -p:KSPRoot="/path/to/Kerbal Space Program" -->
+    <KSPRoot Condition="'$(KSPRoot)' == ''">C:/Program Files (x86)/Steam/steamapps/common/Kerbal Space Program</KSPRoot>
+    <!-- Mac: <KSPRoot>/.../Kerbal Space Program</KSPRoot> and change KSPManaged to KSP.app/Contents/Resources/Data/Managed -->
+    <KSPManaged Condition="'$(KSPManaged)' == ''">$(KSPRoot)/KSP_x64_Data/Managed</KSPManaged>
+    <KopernicusPlugins Condition="'$(KopernicusPlugins)' == ''">$(KSPRoot)/GameData/Kopernicus/Plugins</KopernicusPlugins>
+    <!-- HarmonyKSP, which Kopernicus already requires. Pass -p:HarmonyDll="path/to/0Harmony.dll" if yours is elsewhere. -->
+    <HarmonyDll Condition="'$(HarmonyDll)' == ''">$(KSPRoot)/GameData/000_Harmony/0Harmony.dll</HarmonyDll>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(KSPManaged)/Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Assembly-CSharp-firstpass">
+      <HintPath>$(KSPManaged)/Assembly-CSharp-firstpass.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDll)</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(KSPManaged)/UnityEngine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(KSPManaged)/UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Kopernicus">
+      <HintPath>$(KopernicusPlugins)/Kopernicus.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Kopernicus.Parser">
+      <HintPath>$(KopernicusPlugins)/Kopernicus.Parser.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <!-- After a successful build, copy the DLL to GameData/PolyhedronPQS/Plugins.
+       Keep this project folder OUTSIDE GameData: KSP loads every .dll it finds under
+       GameData, so the bin/ and obj/ copies would be loaded as duplicates. -->
+  <Target Name="CopyToKSP" AfterTargets="Build" Condition="Exists('$(KSPRoot)/GameData')">
+    <Copy SourceFiles="$(TargetPath)"
+          DestinationFolder="$(KSPRoot)/GameData/PolyhedronPQS/Plugins"
+          ContinueOnError="false" />
+  </Target>
+
+</Project>
